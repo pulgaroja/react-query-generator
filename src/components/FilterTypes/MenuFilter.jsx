@@ -4,22 +4,25 @@ import { Select, MenuItem, Input } from '@material-ui/core'
 
 const MenuFilter = ({ filter, updateQuery }) => {
 	const [param, setParam] = useState(filter.isMultiple ? [] : '')
+	const [query, setQuery] = useState(filter.isMultiple ? [] : '')
 
-	const handleChange = event => {
-		const value = event.target.value
+	const handleChange = (e, child) => {
+		const name = child.props.name
+		const value = child.props.value
 
 		if (!filter.isMultiple) {
-			const queryString = `${filter.name}:("${value}")`
+			const queryString = `${filter.value}:("${value}")`
 			updateQuery(value, queryString)
 		}
 
-		setParam(value)
+		setParam([...param, name])
+		setQuery([...query, value])
 	}
 
 	const handleClose = () => {
 		// Validate and generate query string
 		if (filter.isMultiple) {
-			const queryString = param.join(':* AND ') + ':*'
+			const queryString = query.join(':* AND ') + ':*'
 			updateQuery(param, queryString)
 		}
 	}
@@ -30,25 +33,35 @@ const MenuFilter = ({ filter, updateQuery }) => {
 			<Select
 				multiple={filter.isMultiple}
 				displayEmpty
-				value={param}
+				value={query}
 				onChange={handleChange}
 				onClose={handleClose}
-				input={<Input />}
+				input={<Input style={{ width: 200, maxWidth: 200 }} />}
 				renderValue={selected => {
 					if (selected.length === 0) {
 						return <em>Select Option{filter.isMultiple && 's'}</em>
 					}
 					return selected.join(', ')
-				}}
-			>
+				}}>
 				<MenuItem disabled value="">
 					<em>Select Option{filter.isMultiple && 's'}</em>
 				</MenuItem>
-				{filter.options.map(option => (
-					<MenuItem key={option} value={option}>
-						{option}
-					</MenuItem>
-				))}
+				{filter.options.map(option => {
+					if (typeof option === 'string') {
+						return (
+							<MenuItem key={option} value={option}>
+								{option}
+							</MenuItem>
+						)
+					} else {
+						const [name, value] = option
+						return (
+							<MenuItem key={value} name={name} value={value}>
+								{name}
+							</MenuItem>
+						)
+					}
+				})}
 			</Select>
 		</div>
 	)
@@ -59,7 +72,7 @@ MenuFilter.propTypes = {
 		name: PropTypes.string,
 		value: PropTypes.string,
 		type: PropTypes.string,
-		options: PropTypes.arrayOf(PropTypes.string),
+		options: PropTypes.array,
 		isMultiple: PropTypes.bool,
 	}).isRequired,
 	updateQuery: PropTypes.func.isRequired,

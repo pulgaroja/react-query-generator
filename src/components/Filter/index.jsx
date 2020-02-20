@@ -82,7 +82,6 @@ const Filter = ({ filterOptions, handleSearch }) => {
 	 * Function that generates query for selected filter
 	 */
 	const updateQuery = (value, queryString) => {
-		console.log(value)
 		// first we hide the Filter Input
 		setShowFilterInput(false)
 
@@ -126,10 +125,10 @@ const Filter = ({ filterOptions, handleSearch }) => {
 				<Menu anchorEl={menuAnchor} open={showMenu}>
 					{filterOptions.map(({ name, value }, i) => (
 						<MenuItem
-							key={name}
+							key={value}
 							disabled={selectedFilters.includes(i)}
 							onClick={e => handleSelectFilterOption(e, i)}>
-							{value}
+							{name}
 						</MenuItem>
 					))}
 				</Menu>
@@ -186,7 +185,7 @@ Filter.propTypes = {
 			name: PropTypes.string,
 			value: PropTypes.string,
 			type: PropTypes.string,
-			options: PropTypes.arrayOf(PropTypes.string),
+			options: PropTypes.array,
 			isMultiple: PropTypes.bool,
 		}),
 	).isRequired,

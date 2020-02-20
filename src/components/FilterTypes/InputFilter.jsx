@@ -36,7 +36,7 @@ const InputFilter = ({ filter, updateQuery }) => {
 	const handleQueryInput = ({ target: { value } }) => {
 		// Validate and generate query string
 		let param = value.trim()
-		let queryString = `${filter.name}:(`
+		let queryString = `${filter.value}:(`
 
 		if (filter.isMultiple) {
 			param = value

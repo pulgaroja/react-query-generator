@@ -4,17 +4,19 @@ import DatePicker from 'react-datepicker'
 
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
+import { Input } from '@material-ui/core'
 
 const DateFilter = ({ filter, updateQuery }) => {
 	const handleChange = newDate => {
 		const date = moment(newDate).format('MMM Do, YYYY')
 		const queryDate = moment(newDate).format('YYYY-MM-DD')
-		updateQuery(date, `${filter.name}:[${queryDate} TO *]`)
+		updateQuery(date, `${filter.value}:[${queryDate} TO *]`)
 	}
 
 	return (
 		<div>
-			{filter.name}: <DatePicker onChange={handleChange} />
+			{filter.name}:{' '}
+			<DatePicker customInput={<Input />} onChange={handleChange} />
 		</div>
 	)
 }
