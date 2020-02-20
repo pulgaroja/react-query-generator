@@ -4,6 +4,7 @@ import { Grid, Button, Menu, MenuItem } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import InputFilter from '../FilterTypes/InputFilter'
 import MenuFilter from '../FilterTypes/MenuFilter'
+import DateFilter from '../FilterTypes/DateFilter'
 
 export const FilterTypes = {
 	DATE: 'date',
@@ -132,7 +133,7 @@ const Filter = ({ filterOptions, handleSearch }) => {
 						</MenuItem>
 					))}
 				</Menu>
-				{/* The Filter input which allows the user to set the filter value */}
+				{/* Input Filter Type */}
 				{showFilterInput &&
 					filterOptions[selectedFilters[selectedFilters.length - 1]].type ===
 						FilterTypes.INPUT && (
@@ -143,11 +144,22 @@ const Filter = ({ filterOptions, handleSearch }) => {
 							updateQuery={updateQuery}
 						/>
 					)}
-				{/* The Filter input which allows the user to set the filter value */}
+				{/* Menu Filter Type */}
 				{showFilterInput &&
 					filterOptions[selectedFilters[selectedFilters.length - 1]].type ===
 						FilterTypes.MENU && (
 						<MenuFilter
+							filter={
+								filterOptions[selectedFilters[selectedFilters.length - 1]]
+							}
+							updateQuery={updateQuery}
+						/>
+					)}
+				{/* Date Filter Type */}
+				{showFilterInput &&
+					filterOptions[selectedFilters[selectedFilters.length - 1]].type ===
+						FilterTypes.DATE && (
+						<DateFilter
 							filter={
 								filterOptions[selectedFilters[selectedFilters.length - 1]]
 							}
