@@ -1,16 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Button, Menu, MenuItem } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import InputFilter from '../FilterTypes/InputFilter'
-import MenuFilter from '../FilterTypes/MenuFilter'
-import DateFilter from '../FilterTypes/DateFilter'
+import FilterPills from './FilterPills'
+import FilterInput from './FilterInput'
 
-export const FilterTypes = {
-	DATE: 'date',
-	INPUT: 'input',
-	MENU: 'menu',
-}
+import { makeStyles } from '@material-ui/styles'
 
 /**
  * Using Material UI makeStyles to create custom classes
@@ -22,17 +16,16 @@ const useStyles = makeStyles({
 		justifyContent: 'left',
 		alignContent: 'start',
 	},
-	pill: {
-		backgroundColor: '#D1F6F6',
-		color: '#43425D',
-		margin: 0,
-		marginBottom: 10,
-		marginRight: 10,
-		padding: 10,
-		borderRadius: 4,
-		alignSelf: 'center',
-	},
 })
+
+/**
+ * Filter Types
+ */
+export const FilterTypes = {
+	DATE: 'date',
+	INPUT: 'input',
+	MENU: 'menu',
+}
 
 /**
  * Functional React Component which allows for custom creation
@@ -103,22 +96,9 @@ const Filter = ({ filterOptions, handleSearch }) => {
 
 	return (
 		<Grid container>
-			<Grid item sm={9} className={classes.queryContainer}>
+			<Grid item sm={10} xs={12} className={classes.queryContainer}>
 				{/* As filters are added, show them as pills */}
-				{filters.map(({ filter, value }, index) => (
-					<div key={index} className={classes.pill}>
-						{filter.isMultiple && (
-							<span>
-								{filter.name}: {value.join(', ')}
-							</span>
-						)}
-						{!filter.isMultiple && (
-							<span>
-								{filter.name}: {value}
-							</span>
-						)}
-					</div>
-				))}
+				<FilterPills filters={filters} />
 				{/* The Add Filter button, hide while the user is setting a new filter */}
 				{!showFilterInput && <Button onClick={toggleMenu}>+ Add Filter</Button>}
 				{/* The filters Menu */}
@@ -133,44 +113,19 @@ const Filter = ({ filterOptions, handleSearch }) => {
 					))}
 				</Menu>
 				{/* Input Filter Type */}
-				{showFilterInput &&
-					filterOptions[selectedFilters[selectedFilters.length - 1]].type ===
-						FilterTypes.INPUT && (
-						<InputFilter
-							filter={
-								filterOptions[selectedFilters[selectedFilters.length - 1]]
-							}
-							updateQuery={updateQuery}
-						/>
-					)}
-				{/* Menu Filter Type */}
-				{showFilterInput &&
-					filterOptions[selectedFilters[selectedFilters.length - 1]].type ===
-						FilterTypes.MENU && (
-						<MenuFilter
-							filter={
-								filterOptions[selectedFilters[selectedFilters.length - 1]]
-							}
-							updateQuery={updateQuery}
-						/>
-					)}
-				{/* Date Filter Type */}
-				{showFilterInput &&
-					filterOptions[selectedFilters[selectedFilters.length - 1]].type ===
-						FilterTypes.DATE && (
-						<DateFilter
-							filter={
-								filterOptions[selectedFilters[selectedFilters.length - 1]]
-							}
-							updateQuery={updateQuery}
-						/>
-					)}
+				{showFilterInput && (
+					<FilterInput
+						filter={filterOptions[selectedFilters[selectedFilters.length - 1]]}
+						updateQuery={updateQuery}
+					/>
+				)}
 			</Grid>
-			<Grid item sm={3}>
+			<Grid item sm={2} xs={12}>
 				<Button
 					variant="contained"
 					color="primary"
 					style={{ float: 'right' }}
+					fullWidth
 					onClick={() => handleSearch(query)}>
 					Search
 				</Button>
