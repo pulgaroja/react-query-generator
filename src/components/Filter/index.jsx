@@ -127,8 +127,7 @@ const Filter = ({ filterOptions, handleSearch }) => {
 						<MenuItem
 							key={name}
 							disabled={selectedFilters.includes(i)}
-							onClick={e => handleSelectFilterOption(e, i)}
-						>
+							onClick={e => handleSelectFilterOption(e, i)}>
 							{value}
 						</MenuItem>
 					))}
@@ -161,8 +160,7 @@ const Filter = ({ filterOptions, handleSearch }) => {
 					variant="contained"
 					color="primary"
 					style={{ float: 'right' }}
-					onClick={() => handleSearch(query)}
-				>
+					onClick={() => handleSearch(query)}>
 					Search
 				</Button>
 			</Grid>
